@@ -53,8 +53,7 @@ export default function CreatePage() {
   const [photoX, setPhotoX] = useState(0);
   const [photoY, setPhotoY] = useState(0);
 
-  const [builderId, setBuilderId] = useState("");
-
+  const [builderId, setBuilderId] = useState(() => generateBuilderId());
   const [qrCode, setQrCode] = useState("");
 
   const [generating, setGenerating] = useState(false);
@@ -89,6 +88,37 @@ export default function CreatePage() {
       window.removeEventListener("resize", updateCardScale);
     };
   }, []);
+
+  // Generate QR code whenever the Builder ID changes
+  useEffect(() => {
+    if (!builderId) {
+      setQrCode("");
+      return;
+    }
+
+    const generateQR = async () => {
+      try {
+        const qrValue = [
+          "HH Goa 2026",
+          `Builder ID: ${builderId}`,
+          "#FrameInGoa",
+        ].join("\n");
+
+        const dataUrl = await QRCode.toDataURL(qrValue, {
+          width: 300,
+          margin: 2,
+          errorCorrectionLevel: "H",
+        });
+
+        setQrCode(dataUrl);
+      } catch (error) {
+        console.error("QR generation failed:", error);
+        setQrCode("");
+      }
+    };
+
+    generateQR();
+  }, [builderId]);
 
   const canGenerate = useMemo(() => {
     return Boolean(name.trim() && role.trim() && photo);
@@ -207,9 +237,13 @@ export default function CreatePage() {
   };
   const shareToWhatsApp = () => {
     const text = getShareText();
-    const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    const shareUrl = getShareUrl();
 
-    window.open(url, "_blank", "noopener,noreferrer");
+    const url = `https://wa.me/?text=${encodeURIComponent(
+      `${text}\n${shareUrl}`,
+    )}`;
+
+    window.location.href = url;
   };
 
   const shareToFacebook = () => {
