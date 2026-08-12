@@ -1,26 +1,1564 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&display=swap");
+
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --goa-green: #063d2b;
+  --goa-green-dark: #03291e;
+  --goa-cream: #fff5d8;
+  --goa-paper: #f9edcf;
+  --goa-yellow: #f5d000;
+  --goa-pink: #ff197d;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+* {
+  box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--goa-green);
+  color: var(--goa-cream);
+  font-family: "DM Sans", sans-serif;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.font-display {
+  font-family: "Oswald", sans-serif;
+}
+
+.font-mono {
+  font-family: "DM Mono", monospace;
+}
+
+/* =========================
+   CINEMATIC HH GOA INTRO
+========================= */
+
+.intro {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100vw;
+  height: 100dvh;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(20, 103, 70, 0.35),
+      transparent 55%
+    ),
+    #063d2b;
+}
+
+/* Grain */
+
+.intro-grain {
+  opacity: 0.08;
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(circle at 20% 20%, #fff 0 0.7px, transparent 0.8px),
+    radial-gradient(circle at 70% 70%, #fff 0 0.6px, transparent 0.7px);
+
+  background-size:
+    7px 7px,
+    11px 11px;
+}
+
+/* =========================
+   SUN
+========================= */
+
+.intro-sun {
+  display: none !important;
+}
+
+@keyframes intro-sun-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+
+  to {
+    opacity: 0.92;
+    transform: scale(1);
+  }
+}
+
+@keyframes intro-sun-pulse {
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+/* =========================
+   CLOUDS
+========================= */
+
+.intro-cloud {
+  position: absolute;
+
+  width: 180px;
+  height: 32px;
+
+  border-radius: 999px;
+
+  border: 1px solid rgba(255, 245, 216, 0.08);
+
+  opacity: 0;
+
+  animation:
+    cloud-appear 1s ease-out forwards,
+    cloud-float 12s linear infinite;
+}
+
+.intro-cloud::before,
+.intro-cloud::after {
+  content: "";
+
+  position: absolute;
+
+  border-radius: 50%;
+
+  background: #063d2b;
+
+  border: inherit;
+}
+
+.intro-cloud::before {
+  width: 70px;
+  height: 70px;
+
+  left: 35px;
+  bottom: -1px;
+}
+
+.intro-cloud::after {
+  width: 52px;
+  height: 52px;
+
+  left: 92px;
+  bottom: -1px;
+}
+
+.cloud-a {
+  left: 4%;
+  top: 22%;
+
+  animation-delay: 0.4s;
+}
+
+.cloud-b {
+  right: 8%;
+  top: 35%;
+
+  transform: scale(0.7);
+
+  animation-delay: 1s;
+}
+
+.cloud-c {
+  left: 30%;
+  top: 72%;
+
+  transform: scale(0.45);
+
+  animation-delay: 1.6s;
+}
+
+@keyframes cloud-appear {
+  to {
+    opacity: 0.35;
+  }
+}
+
+@keyframes cloud-float {
+  50% {
+    transform: translateX(70px);
+  }
+}
+
+/* =========================
+   STARS
+========================= */
+
+.intro-stars {
+  position: absolute;
+  inset: 0;
+
+  opacity: 0;
+
+  background-image:
+    radial-gradient(circle, #f5d000 0 1px, transparent 1.5px),
+    radial-gradient(circle, #ff197d 0 1px, transparent 1.5px);
+
+  background-size:
+    90px 90px,
+    130px 130px;
+
+  animation: stars-enter 1.5s ease-out 0.5s forwards;
+}
+
+@keyframes stars-enter {
+  to {
+    opacity: 0.22;
+  }
+}
+
+/* =========================
+   PLANE
+========================= */
+
+.hero-plane {
+  position: absolute;
+  right: 0;
+  top: 82px;
+  width: 240px;
+  height: 100px;
+  transform: rotate(-3deg);
+}
+
+.hero-plane-body {
+  position: absolute;
+  right: 0;
+  top: 28px;
+  width: 210px;
+  height: 40px;
+  border-radius: 80% 45% 45% 80%;
+  background: linear-gradient(180deg, #176348, #063d2b 55%, #03291e);
+  border: 2px solid #f5d000;
+  box-shadow:
+    0 0 25px rgba(245, 208, 0, 0.15),
+    inset 0 -6px 0 rgba(255, 25, 125, 0.25);
+}
+
+/* Nose */
+.hero-plane-body::after {
+  content: "";
+  position: absolute;
+  right: -38px;
+  top: 10px;
+  width: 55px;
+  height: 20px;
+  background: #f5d000;
+  clip-path: polygon(0 50%, 100% 0, 76% 100%);
+}
+
+/* Windows */
+.hero-plane-window {
+  position: absolute;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ff197d;
+  box-shadow: 0 0 8px rgba(255, 25, 125, 0.7);
+}
+.w1 {
+  left: 25px;
+}
+.w2 {
+  left: 40px;
+}
+.w3 {
+  left: 55px;
+}
+.w4 {
+  left: 70px;
+}
+.w5 {
+  left: 85px;
+}
+
+/* Plane logo */
+.hero-plane-logo {
+  position: absolute;
+  left: 120px;
+  top: 12px;
+  color: #f5d000;
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+/* Wings */
+.hero-plane-wing {
+  position: absolute;
+  background: #f5d000;
+}
+.top-wing {
+  width: 110px;
+  height: 14px;
+  left: 70px;
+  top: -14px;
+  clip-path: polygon(0 100%, 100% 0, 76% 100%);
+}
+.bottom-wing {
+  width: 95px;
+  height: 12px;
+  left: 80px;
+  bottom: -12px;
+  clip-path: polygon(0 0, 100% 100%, 20% 100%);
+}
+
+/* Tail */
+.hero-plane-tail {
+  position: absolute;
+  left: 12px;
+  top: -25px;
+  width: 38px;
+  height: 48px;
+  background: #ff197d;
+  clip-path: polygon(0 100%, 65% 0, 100% 100%);
+}
+
+/* Engine glow */
+.engine-glow {
+  position: absolute;
+  right: 185px;
+  top: 48px;
+  width: 160px;
+  height: 25px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 25, 125, 0.5),
+    rgba(245, 208, 0, 0.4)
+  );
+  filter: blur(14px);
+  animation: engine-flicker 0.35s ease-in-out infinite alternate;
+}
+
+@keyframes engine-flicker {
+  from {
+    opacity: 0.5;
+    transform: scaleX(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1.15);
+  }
+}
+
+/* ==========================================
+   ARRIVAL TITLE
+========================================== */
+
+.arrival-title {
+  position: absolute;
+
+  z-index: 20;
+
+  left: 50%;
+  top: 50%;
+
+  width: min(94vw, 1500px);
+
+  transform: translate(-50%, -50%) scale(0.15) rotate(-8deg);
+
+  opacity: 0;
+
+  pointer-events: none;
+
+  animation: arrival-title-pop 1.35s cubic-bezier(0.16, 1.35, 0.3, 1) 4.45s
+    forwards;
+}
+
+.arrival-title-main {
+  width: 100%;
+
+  text-align: center;
+
+  white-space: nowrap;
+
+  font-family: "Oswald", sans-serif;
+
+  font-size: clamp(4.5rem, 11vw, 11rem);
+
+  font-weight: 500;
+
+  line-height: 0.78;
+
+  letter-spacing: -0.06em;
+
+  color: #f5d000;
+
+  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+/* ==========================================
+   FLOATING GOA
+========================================== */
+
+.arrival-title-goa {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  z-index: 25;
+
+  transform: translate(-50%, -50%) rotate(-3deg);
+
+  font-family: "Noto Sans Devanagari", sans-serif;
+
+  font-size: clamp(4rem, 7vw, 7rem);
+  font-weight: 900;
+
+  line-height: 0.9;
+
+  /* Yellow Hindi text */
+  color: #f5d000;
+
+  /* Thick pink border */
+  -webkit-text-stroke: 7px #ff197d;
+
+  /* Make the yellow fill sit above the pink stroke */
+  paint-order: stroke fill;
+
+  /* Small dark-green depth/shadow */
+  text-shadow: 5px 5px 0 #063d2b;
+
+  white-space: nowrap;
+
+  pointer-events: none;
+}
+
+@keyframes goa-float {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) rotate(-3deg);
+  }
+
+  50% {
+    transform: translate(-50%, calc(-50% - 10px)) rotate(2deg);
+  }
+}
+
+.studio-mark {
+  position: absolute;
+
+  left: 5%;
+  top: 42px;
+
+  z-index: 10;
+
+  display: flex;
+
+  flex-direction: column;
+
+  color: #f5d000;
+
+  font-family: "Oswald", sans-serif;
+
+  line-height: 0.75;
+
+  user-select: none;
+}
+
+.studio-time {
+  font-size: clamp(3rem, 5vw, 5rem);
+
+  font-weight: 700;
+
+  letter-spacing: -0.08em;
+}
+
+.studio-pm {
+  margin-left: 92px;
+
+  margin-top: -10px;
+
+  font-family: "DM Mono", monospace;
+
+  font-size: 14px;
+
+  letter-spacing: -0.05em;
+}
+
+.studio-name {
+  margin-left: 38px;
+
+  margin-top: 5px;
+
+  font-size: clamp(1.5rem, 2.5vw, 2.8rem);
+
+  font-weight: 700;
+
+  letter-spacing: -0.04em;
+}
+
+/* ==========================================
+   DETAILS
+========================================== */
+
+.arrival-title-details {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 18px;
+
+  margin-top: 38px;
+
+  color: #f5d000;
+
+  font-family: "DM Mono", monospace;
+
+  font-size: clamp(9px, 1.1vw, 14px);
+
+  letter-spacing: 0.15em;
+
+  text-transform: uppercase;
+}
+
+/* ==========================================
+   POP / SNAP / SETTLE
+========================================== */
+
+@keyframes arrival-title-pop {
+  0% {
+    opacity: 0;
+
+    transform: translate(-50%, -50%) scale(0.08) rotate(-12deg);
+  }
+
+  12% {
+    opacity: 1;
+
+    transform: translate(-50%, -50%) scale(0.55) rotate(5deg);
+  }
+
+  30% {
+    transform: translate(-50%, -50%) scale(1.08) rotate(-2deg);
+  }
+
+  45% {
+    transform: translate(-50%, -50%) scale(0.97) rotate(1deg);
+  }
+
+  60% {
+    transform: translate(-50%, -50%) scale(1.02) rotate(-0.5deg);
+  }
+
+  75%,
+  100% {
+    opacity: 1;
+
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  }
+}
+
+/* =========================
+   ARRIVAL STAMP
+========================= */
+
+.arrival-stamp {
+  position: absolute;
+
+  z-index: 30;
+
+  left: 50%;
+  top: 55%;
+
+  opacity: 0;
+
+  transform: translate(-50%, -50%) scale(0.2) rotate(-20deg);
+
+  animation: stamp-pop 0.8s cubic-bezier(0.16, 1.4, 0.3, 1) 5.25s forwards;
+}
+
+.stamp-ring {
+  display: flex;
+
+  width: 110px;
+  height: 110px;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  border: 2px dashed #ff197d;
+
+  border-radius: 50%;
+
+  color: #ff197d;
+
+  font-family: "DM Mono", monospace;
+
+  text-align: center;
+
+  background: rgba(6, 61, 43, 0.85);
+
+  box-shadow: 0 0 0 8px rgba(255, 25, 125, 0.04);
+}
+
+.stamp-ring span {
+  font-size: 7px;
+  letter-spacing: 0.15em;
+}
+
+.stamp-ring strong {
+  margin: 4px 0;
+
+  font-family: "Oswald", sans-serif;
+
+  font-size: 27px;
+}
+
+@keyframes stamp-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2) rotate(-20deg);
+  }
+
+  30% {
+    opacity: 1;
+  }
+
+  65% {
+    transform: translate(-50%, -50%) scale(1.15) rotate(5deg);
+  }
+
+  100% {
+    opacity: 0.9;
+
+    transform: translate(-50%, -50%) scale(1) rotate(-3deg);
+  }
+}
+
+/* =========================
+   2:47 PM STUDIO
+========================= */
+
+.intro-studio {
+  position: absolute;
+
+  right: 5%;
+  bottom: 12%;
+
+  z-index: 30;
+
+  color: #f5d000;
+
+  font-family: "DM Mono", monospace;
+
+  font-size: clamp(12px, 1.5vw, 20px);
+
+  letter-spacing: 0.15em;
+
+  opacity: 0;
+
+  animation: studio-reveal 0.8s ease-out 4.9s forwards;
+}
+
+@keyframes studio-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================
+   PALMS
+========================= */
+
+.intro-palm {
+  position: absolute;
+
+  z-index: 3;
+
+  bottom: -80px;
+
+  width: 240px;
+  height: 420px;
+
+  border: 2px solid rgba(245, 208, 0, 0.15);
+
+  border-radius: 100% 0;
+
+  opacity: 0;
+
+  animation: palm-enter 1.2s ease-out 1.5s forwards;
+}
+
+.palm-left {
+  left: -120px;
+
+  transform: rotate(28deg);
+}
+
+.palm-right {
+  right: -120px;
+
+  transform: rotate(-28deg);
+}
+
+@keyframes palm-enter {
+  from {
+    opacity: 0;
+    transform: translateY(80px) rotate(28deg);
+  }
+
+  to {
+    opacity: 0.5;
+  }
+}
+
+/* =========================
+   OCEAN WAVES
+========================= */
+
+.intro-waves {
+  position: absolute;
+
+  z-index: 4;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 80px;
+
+  overflow: hidden;
+
+  opacity: 0.3;
+}
+
+.intro-waves span {
+  position: absolute;
+
+  left: -10%;
+
+  width: 120%;
+
+  height: 35px;
+
+  border-top: 2px solid #f5d000;
+
+  border-radius: 50%;
+
+  animation: wave-move 4s ease-in-out infinite;
+}
+
+.intro-waves span:nth-child(1) {
+  bottom: 10px;
+}
+
+.intro-waves span:nth-child(2) {
+  bottom: 25px;
+
+  animation-delay: -1s;
+}
+
+.intro-waves span:nth-child(3) {
+  bottom: 40px;
+
+  animation-delay: -2s;
+}
+
+@keyframes wave-move {
+  50% {
+    transform: translateX(40px) scaleY(0.7);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 768px) {
+  .intro .goa-flight {
+    display: none !important;
+  }
+
+  .intro .arrival-title-main,
+  .hero-title-centered {
+    font-size: clamp(3.25rem, 17vw, 6rem) !important;
+    letter-spacing: -0.055em !important;
+  }
+  .goa-flight {
+    top: 35%;
+
+    width: 700px;
+
+    height: 210px;
+  }
+
+  .flying-title {
+    right: 220px;
+
+    width: 520px;
+  }
+
+  .flying-title-main {
+    font-size: 4.3rem;
+  }
+
+  .flying-title-goa {
+    font-size: 3.8rem;
+
+    left: 45%;
+    top: 45px;
+  }
+
+  .flying-title-details {
+    font-size: 7px;
+  }
+
+  .hero-plane {
+    transform: scale(0.65) rotate(-3deg);
+
+    transform-origin: right center;
+  }
+
+  .intro-sun {
+    width: 190px;
+  }
+
+  .intro-studio {
+    right: 6%;
+    bottom: 15%;
+    font-size: 9px;
+  }
+}
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+.brand-mark {
+  display: flex;
+  width: 43px;
+  height: 43px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--goa-yellow);
+  background: #0b4d36;
+  color: var(--goa-yellow);
+  line-height: 1;
+}
+
+.brand-mark span {
+  font-family: "Oswald", sans-serif;
+  font-size: 17px;
+}
+
+.brand-mark small {
+  margin-top: 3px;
+  font-family: "DM Mono", monospace;
+  font-size: 6px;
+  letter-spacing: 0.18em;
+}
+
+.nav-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 15px;
+  border-radius: 999px;
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: 180ms ease;
+}
+
+.nav-pill-outline {
+  border: 1px solid rgba(245, 208, 0, 0.4);
+  color: var(--goa-yellow);
+}
+
+.nav-pill-outline:hover {
+  background: var(--goa-yellow);
+  color: var(--goa-green);
+}
+
+.nav-pill-yellow {
+  background: var(--goa-yellow);
+  color: var(--goa-green);
+}
+
+.nav-pill-yellow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(245, 208, 0, 0.15);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero-pattern {
+  opacity: 0.18;
+  background-image:
+    radial-gradient(
+      circle at 15% 25%,
+      rgba(245, 208, 0, 0.3) 0 1px,
+      transparent 1.5px
+    ),
+    radial-gradient(
+      circle at 75% 65%,
+      rgba(255, 25, 125, 0.2) 0 1px,
+      transparent 1.5px
+    );
+  background-size:
+    42px 42px,
+    61px 61px;
+}
+
+.hero-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  border: 1px solid rgba(245, 208, 0, 0.35);
+  border-radius: 999px;
+  padding: 8px 13px;
+  color: var(--goa-yellow);
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hero-stamp-top {
+  position: absolute;
+  top: 40px;
+  left: 40%;
+  transform: translateX(-50%);
+  z-index: 20;
+  margin: 0;
+}
+
+.pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--goa-yellow);
+  box-shadow: 0 0 0 5px rgba(245, 208, 0, 0.08);
+  animation: dot-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+  50% {
+    box-shadow: 0 0 0 9px rgba(245, 208, 0, 0);
+  }
+}
+
+.hero-eyebrow,
+.section-kicker {
+  margin: 30px 0 14px;
+  font-family: "DM Mono", monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--goa-pink);
+}
+
+.hero-title {
+  max-width: 1150px;
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(4rem, 13vw, 12.5rem);
+  font-weight: 600;
+  line-height: 0.76;
+  letter-spacing: -0.065em;
+  text-transform: uppercase;
+  color: var(--goa-yellow);
+}
+
+.hero-title span {
+  display: inline-block;
+  margin-left: 0.04em;
+  color: var(--goa-pink);
+  font-size: 0.72em;
+  letter-spacing: -0.02em;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  min-width: 260px;
+  border: 1px solid var(--goa-yellow);
+  background: var(--goa-yellow);
+  padding: 16px 18px;
+  color: var(--goa-green);
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: 200ms ease;
+}
+
+.hero-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 40px rgba(245, 208, 0, 0.14);
+}
+
+.route-line {
+  width: 40px;
+  height: 1px;
+  background: var(--goa-pink);
+}
+
+/* Decorative leaves */
+
+.leaf {
+  position: absolute;
+  width: 220px;
+  height: 450px;
+  border: 1px solid rgba(245, 208, 0, 0.08);
+  border-radius: 100% 0;
+  opacity: 0.5;
+}
+
+.leaf-left {
+  left: -120px;
+  bottom: -80px;
+  transform: rotate(28deg);
+}
+
+.leaf-right {
+  right: -100px;
+  top: 120px;
+  transform: rotate(-25deg);
+}
+
+/* =========================
+   SAMPLE ID
+========================= */
+
+.builder-card {
+  position: relative;
+  width: min(100%, 390px);
+  aspect-ratio: 0.72;
+  overflow: hidden;
+  border: 7px solid var(--goa-green);
+  border-radius: 20px;
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(255, 25, 125, 0.12) 0 2px,
+      transparent 2.5px
+    ),
+    var(--goa-paper);
+  padding: 22px;
+  color: var(--goa-green);
+  box-shadow: 18px 25px 0 rgba(6, 61, 43, 0.12);
+  transform: rotate(-2deg);
+  transition: 350ms ease;
+}
+
+.builder-card:hover {
+  transform: rotate(0deg) translateY(-8px);
+  box-shadow: 22px 35px 0 rgba(6, 61, 43, 0.14);
+}
+
+.builder-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.builder-card-brand {
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 0.9;
+}
+
+.builder-card-year {
+  margin-top: 5px;
+  font-family: "DM Mono", monospace;
+  font-size: 6px;
+  letter-spacing: 0.15em;
+}
+
+.builder-card-stamp {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border: 2px dashed var(--goa-pink);
+  border-radius: 50%;
+  color: var(--goa-pink);
+  font-family: "DM Mono", monospace;
+  font-size: 8px;
+  font-weight: 700;
+  transform: rotate(12deg);
+}
+
+.builder-photo {
+  position: relative;
+  display: flex;
+  height: 43%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  overflow: hidden;
+  border: 3px solid var(--goa-green);
+  background:
+    radial-gradient(circle at 50% 30%, rgba(245, 208, 0, 0.4), transparent 32%),
+    #0b5b3e;
+}
+
+.sample-person {
+  position: relative;
+  width: 100px;
+  height: 150px;
+  margin-top: 35px;
+}
+
+.sample-head {
+  position: absolute;
+  left: 28px;
+  top: 0;
+  width: 45px;
+  height: 53px;
+  border-radius: 48% 48% 45% 45%;
+  background: #a86446;
+}
+
+.sample-head::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: -6px;
+  width: 51px;
+  height: 27px;
+  border-radius: 50% 50% 30% 30%;
+  background: #1f201c;
+}
+
+.sample-body {
+  position: absolute;
+  bottom: 0;
+  left: 7px;
+  width: 86px;
+  height: 91px;
+  border-radius: 50px 50px 0 0;
+  background: #142a23;
+}
+
+.photo-label {
+  position: absolute;
+  left: 8px;
+  bottom: 7px;
+  font-family: "DM Mono", monospace;
+  font-size: 6px;
+  letter-spacing: 0.15em;
+  color: rgba(255, 245, 216, 0.55);
+}
+
+.builder-name {
+  margin-top: 16px;
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(21px, 5vw, 28px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.builder-role {
+  margin-top: 2px;
+  color: var(--goa-pink);
+  font-family: "DM Mono", monospace;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.builder-class {
+  margin-top: 12px;
+  border-top: 1px solid rgba(6, 61, 43, 0.25);
+  border-bottom: 1px solid rgba(6, 61, 43, 0.25);
+  padding: 8px 0;
+  color: var(--goa-green);
+  font-family: "Oswald", sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.builder-class span {
+  display: block;
+  margin-bottom: 2px;
+  font-family: "DM Mono", monospace;
+  font-size: 6px;
+  letter-spacing: 0.15em;
+  color: rgba(6, 61, 43, 0.5);
+}
+
+.builder-meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+  font-family: "DM Mono", monospace;
+  font-size: 7px;
+  font-weight: 500;
+}
+
+.builder-meta span {
+  display: block;
+  margin-bottom: 3px;
+  font-size: 5px;
+  letter-spacing: 0.14em;
+  color: rgba(6, 61, 43, 0.5);
+}
+
+.builder-barcode {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 20px;
+  margin-top: 11px;
+}
+
+.builder-barcode i {
+  display: block;
+  width: 2px;
+  height: 100%;
+  background: var(--goa-green);
+}
+
+.builder-barcode i:nth-child(2n) {
+  height: 65%;
+}
+
+.builder-barcode i:nth-child(3n) {
+  height: 82%;
+}
+
+.builder-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  border-top: 2px solid var(--goa-green);
+  padding-top: 6px;
+  font-family: "DM Mono", monospace;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section-title {
+  margin: 0;
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(4rem, 10vw, 8.5rem);
+  font-weight: 600;
+  line-height: 0.78;
+  letter-spacing: -0.055em;
+}
+
+.dark-cta {
+  align-items: center;
+  gap: 30px;
+  background: var(--goa-green);
+  padding: 17px 20px;
+  color: var(--goa-yellow);
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: 200ms ease;
+}
+
+.dark-cta:hover {
+  transform: translateX(4px);
+}
+
+.dark-cta span {
+  font-size: 18px;
+}
+
+.massive-word {
+  font-family: "Oswald", sans-serif;
+  font-size: clamp(4.8rem, 17vw, 15rem);
+  font-weight: 600;
+  line-height: 0.7;
+  letter-spacing: -0.07em;
+}
+
+.massive-word-yellow {
+  color: var(--goa-yellow);
+}
+
+.massive-word-pink {
+  color: var(--goa-pink);
+  margin-left: 12%;
+}
+
+.massive-word-cream {
+  color: var(--goa-cream);
+}
+
+.final-cta-button {
+  align-items: center;
+  gap: 35px;
+  border: 2px solid var(--goa-green);
+  padding: 18px 23px;
+  font-family: "DM Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  transition: 200ms ease;
+}
+
+.final-cta-button:hover {
+  background: var(--goa-green);
+  color: var(--goa-pink);
+  transform: translateY(-3px);
+}
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes sun-pulse {
+  50% {
+    transform: scale(1.05);
+    opacity: 0.82;
+  }
+}
+
+@keyframes cloud-drift {
+  from {
+    transform: translateX(-40px);
+  }
+
+  to {
+    transform: translateX(80px);
+  }
+}
+
+@keyframes cloud-drift-reverse {
+  from {
+    transform: translateX(50px);
+  }
+
+  to {
+    transform: translateX(-70px);
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 640px) {
+  .hacker-plane {
+    transform: scale(0.7);
+    transform-origin: center;
+  }
+
+  .intro-title h1 {
+    font-size: clamp(3.5rem, 18vw, 6rem);
+  }
+
+  .intro-subtitle {
+    max-width: 260px;
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  .arrival-marker {
+    top: 63%;
+  }
+
+  .hero-title {
+    font-size: clamp(4.2rem, 20vw, 7rem);
+  }
+
+  .hero-cta {
+    width: 100%;
+  }
+
+  .builder-card {
+    width: min(92vw, 360px);
+  }
+
+  .massive-word {
+    font-size: clamp(4rem, 22vw, 7rem);
+  }
+
+  .massive-word-pink {
+    margin-left: 8%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Keep the landing page title centered and preserve the floating Hindi treatment. */
+.hero-title-wrap {
+  display: flex;
+  justify-content: center;
+  width: min(95vw, 1550px);
+  margin-inline: auto;
+}
+
+/* Stamp remains independent from the Hacker House logo. */
+.intro .arrival-stamp {
+  left: auto !important;
+  right: 6% !important;
+  top: 14% !important;
+  z-index: 35 !important;
+  opacity: 1 !important;
+  transform: rotate(-5deg) scale(1) !important;
+  animation: none !important;
+}
+
+@media (max-width: 768px) {
+  .intro {
+    width: 540px !important;
+    height: 130px !important;
+  }
+
+  .intro {
+    transform: none !important;
+  }
+
+  .intro {
+    left: 245px !important;
+    top: 32px !important;
+    width: 180px !important;
+    height: 52px !important;
+  }
+
+  .intro {
+    font-size: 21px !important;
+  }
+
+  .intro {
+    left: -20px !important;
+    width: 23px !important;
+  }
+
+  .intro {
+    left: 410px !important;
+    width: 170px !important;
+  }
+
+  .intro {
+    left: 350px !important;
+    font-size: 8px !important;
+  }
+}
+
+/* Intro studio identity: same 2:47 PM STUDIO treatment, TOP LEFT. */
+.intro .intro-studio {
+  position: absolute !important;
+  left: 5% !important;
+  right: auto !important;
+  top: 34px !important;
+  bottom: auto !important;
+  z-index: 40 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  color: #f5d000 !important;
+  font-family: "Oswald", "Arial Narrow", sans-serif !important;
+  font-size: clamp(12px, 1.5vw, 20px) !important;
+  font-weight: 800 !important;
+  line-height: 0.76 !important;
+  letter-spacing: -0.05em !important;
+  opacity: 1 !important;
+  animation: none !important;
+}
+
+.intro .intro-studio::before {
+  content: "2:47";
+  display: block;
+  font-size: clamp(3rem, 5vw, 5.4rem);
+  font-weight: 800;
+  letter-spacing: -0.09em;
+}
+
+.intro .intro-studio::after {
+  content: "STUDIO";
+  display: block;
+  margin-left: 34px;
+  margin-top: 5px;
+  font-size: clamp(1.5rem, 2.5vw, 2.7rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+}
+
+.intro .intro-studio span {
+  position: absolute;
+  left: 0;
+  top: clamp(2.55rem, 4.25vw, 4.55rem);
+  margin-left: clamp(58px, 7vw, 92px);
+  white-space: nowrap;
+  font-family: "DM Mono", monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+}
+
+@media (max-width: 700px) {
+  .intro .intro-studio {
+    left: 18px !important;
+    top: 18px !important;
+    transform: scale(0.72);
+    transform-origin: top left;
+  }
+
+  .hero-stamp-top {
+    display: none !important;
+  }
 }
