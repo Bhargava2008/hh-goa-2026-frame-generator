@@ -170,7 +170,6 @@ export default function CreatePage() {
       `${nameText} · ${roleText}`,
       `${classText} · ${builderId}`,
       `BUILD → SHIP → REPEAT 🌴`,
-      `${siteUrl}`,
       `#FrameInGoa #HHGoa2026`,
     ].join("\n");
 
@@ -198,7 +197,11 @@ export default function CreatePage() {
 
   const shareToX = () => {
     const text = getShareText();
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`;
+    const shareUrl = getShareUrl();
+
+    const url =
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}` +
+      `&url=${encodeURIComponent(shareUrl)}`;
 
     window.open(url, "_blank", "noopener,noreferrer");
   };
