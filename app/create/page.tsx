@@ -196,16 +196,11 @@ export default function CreatePage() {
   };
 
   const shareToX = () => {
-    const text = getShareText();
-    const shareUrl = getShareUrl();
-
-    const url =
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}` +
-      `&url=${encodeURIComponent(shareUrl)}`;
-
-    window.open(url, "_blank", "noopener,noreferrer");
+    window.open(
+      "https://twitter.com/intent/tweet?text=Hello%20from%20HH%20Goa%202026",
+      "_blank",
+    );
   };
-
   const shareToWhatsApp = () => {
     const text = getShareText();
     const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
